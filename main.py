@@ -108,6 +108,7 @@ while True:
             if game_over:
                 if event.key == pygame.K_SPACE:
                     game_over = False
+                    score = 0
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_RIGHT:
                 player_speed -= 6
