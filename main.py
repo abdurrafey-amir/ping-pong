@@ -2,9 +2,6 @@ import pygame
 import sys
 import random
 
-
-game_over = False
-
 # functions
 def player_ani():
     player.x += player_speed
@@ -34,16 +31,10 @@ def ball_ani():
         ball_speed_y *= -1
         score += 1
     if ball.bottom >= screen_height:
-        reset()
+        game_over = True
 
 
-def reset():
-    screen.fill(sc_color)
-    text = font.render(f'Game Over!\nFinal score: {score}', False, pygame.Color('white'))
-    screen.blit(text, (screen_width / 2 + 15, screen_height / 2))
-    ball.center = (screen_width / 2, screen_height / 2)
-    pygame.display.flip()
-        
+
 
 
 
@@ -55,28 +46,28 @@ clock = pygame.time.Clock()
 
 
 # main window
-screen_width = 1280
+screen_width = 480
 screen_height = 650
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('Ping Pong')
 
 
 # recs
-player = pygame.Rect(screen_width / 2 - 15, screen_height - 50, 120, 30)
-ball = pygame.Rect(player.left + 35, player.top - 50, 30, 30)
+player = pygame.Rect(screen_width / 2 - 40, screen_height - 30, 80, 20)
+ball = pygame.Rect(screen_width / 2 - 7.5, 200, 25, 25)
 player_speed = 0
-ball_speed_x = 1.5 * random.choice((1, -1))
-ball_speed_y = -1.5
+ball_speed_x = 5 * random.choice((1, -1))
+ball_speed_y = 5
 
 bg_color = pygame.Color('yellow')
 sc_color = pygame.Color('black')
 
 # text
 score = 0
-font = pygame.font.Font('freesansbold.ttf', 32)
+font = pygame.font.Font('freesansbold.ttf', 30)
 
 # timer
-# score_time = True
+game_over = False
 
 # main loop
 while True:
@@ -87,14 +78,14 @@ while True:
             sys.exit()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RIGHT:
-                player_speed += 2
+                player_speed += 6
             if event.key == pygame.K_LEFT:
-                player_speed -= 2
+                player_speed -= 6
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_RIGHT:
-                player_speed -= 2
+                player_speed -= 6
             if event.key == pygame.K_LEFT:
-                player_speed += 2
+                player_speed += 6
 
     # functions
     player_ani()
@@ -108,8 +99,13 @@ while True:
 
     # text
     score_text = font.render(f'{score}', False, sc_color)
-    screen.blit(score_text, (screen_width / 2 + 15, screen_height / 2))
+    screen.blit(score_text, (screen_width / 2 - 10, screen_height / 2))
 
-
-
+    if game_over:
+        screen.fill(sc_color)
+        text = font.render('Game Over!', False, pygame.Color('white'))
+        screen.blit(text, (screen_width / 2 - 80, screen_height / 2))
+        text_2 = font.render(f'Final score: {score}', False, pygame.Color('white'))
+        screen.blit(text_2, (screen_width / 2 - 80, screen_height / 2 + 40))
     pygame.display.flip()
+    clock.tick(80)
